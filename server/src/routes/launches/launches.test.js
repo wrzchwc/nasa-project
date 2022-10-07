@@ -1,21 +1,23 @@
 const request = require('supertest');
 const app = require('../../app');
 const {mongoConnect, mongoDisconnect} = require('../../services/mongo');
+const {loadPlanetsData} = require("../../models/planets/planets.model");
 
 const mission = 'mission';
 const rocket = 'rocket';
 const destination = 'Kepler-442 b';
 const launchDate = 'September 1, 2022';
 
-beforeAll(async () => {
-    await mongoConnect();
-});
-
-afterAll(async () => {
-    await mongoDisconnect();
-});
-
 describe('/launches', () => {
+    beforeAll(async () => {
+        await mongoConnect();
+        await loadPlanetsData();
+    });
+
+    afterAll(async () => {
+        await mongoDisconnect();
+    });
+
     describe('GET /launches', () => {
         test('Should respond with 200', async () => {
             const response = await request(app).get('/v1/launches').expect('Content-Type', /json/).expect(200);
