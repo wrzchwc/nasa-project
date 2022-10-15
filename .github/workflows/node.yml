@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     env:
+      # only for React, disables watch mode
       CI: true
       MONGO_URL: mongodb://localhost/nasa
     strategy:
